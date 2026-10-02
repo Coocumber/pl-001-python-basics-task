@@ -19,6 +19,7 @@ from .storage import (
     Product,
 )
 
+
 type CartLine = tuple[int, int]
 
 
