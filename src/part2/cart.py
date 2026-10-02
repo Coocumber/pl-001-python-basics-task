@@ -65,10 +65,11 @@ def add_to_cart(
     update_product(
         storage,
         product_id,
-        search[NAME_INDEX : PRICE_INDEX + 1] + (search[QUANTITY_INDEX] - quantity,),
+        (search[NAME_INDEX], search[PRICE_INDEX], search[QUANTITY_INDEX] - quantity),
     )
 
-    cart_search = [el for el in cart if el[LINE_PRODUCT_ID_INDEX] == product_id]
+    cart_search_l = [el for el in cart if el[LINE_PRODUCT_ID_INDEX] == product_id]
+    cart_search = cart_search_l[0]
     if cart_search:
         new_cart_line = (product_id, cart_search[0][LINE_QUANTITY_INDEX] + quantity)
         cart.remove(cart_search)
@@ -107,8 +108,8 @@ def remove_from_cart(
         zero means the line was dropped), or ``None`` when the cart has no
         line for the product or holds too few units.
     """
-    search = [el for el in cart if el[LINE_PRODUCT_ID_INDEX] == product_id]
-    search = search[0]
+    search_l = [el for el in cart if el[LINE_PRODUCT_ID_INDEX] == product_id]
+    search = search_l[0]
     if not search:
         print(f"product {product_id} is not in the cart")
         return None

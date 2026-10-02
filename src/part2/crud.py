@@ -115,7 +115,7 @@ def update_product(
         print(f"no product with id {product_id}")
         return None
 
-    storage[storage.index(search)] = product_id, +fields
+    storage[storage.index(search)] = (product_id,) + fields
 
     return next(filter(lambda x: x[PRODUCT_ID_INDEX] == product_id, storage))
 
