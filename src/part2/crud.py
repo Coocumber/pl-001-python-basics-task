@@ -111,7 +111,7 @@ def update_product(
         left unchanged and a message is printed).
     """
     search = read_product(storage, product_id)
-    if not filter(lambda x: x[PRODUCT_ID_INDEX] == product_id, storage):
+    if search == None:
         print(f"no product with id {product_id}")
         return None
 

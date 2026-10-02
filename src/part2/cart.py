@@ -19,7 +19,6 @@ from .storage import (
     Product,
 )
 
-
 type CartLine = tuple[int, int]
 
 
@@ -71,7 +70,7 @@ def add_to_cart(
     cart_search_l = [el for el in cart if el[LINE_PRODUCT_ID_INDEX] == product_id]
     cart_search = cart_search_l[0]
     if cart_search:
-        new_cart_line = (product_id, cart_search[0][LINE_QUANTITY_INDEX] + quantity)
+        new_cart_line = (product_id, cart_search[LINE_QUANTITY_INDEX] + quantity)
         cart.remove(cart_search)
         cart.append(new_cart_line)
         return new_cart_line
@@ -113,9 +112,9 @@ def remove_from_cart(
     if not search:
         print(f"product {product_id} is not in the cart")
         return None
-    elif search[QUANTITY_INDEX] < quantity:
+    elif search[LINE_QUANTITY_INDEX] < quantity:
         print(
-            f"cart holds only {search[QUANTITY_INDEX]} unit(s) of product {product_id}, cannot remove {quantity}"
+            f"cart holds only {search[LINE_QUANTITY_INDEX]} unit(s) of product {product_id}, cannot remove {quantity}"
         )
         return None
 
@@ -126,8 +125,11 @@ def remove_from_cart(
     update_product(
         storage,
         product_id,
-        search_storage[NAME_INDEX : PRICE_INDEX + 1]
-        + (search_storage[QUANTITY_INDEX] + quantity,),
+        (
+            search_storage[NAME_INDEX],
+            search_storage[PRICE_INDEX],
+            (search_storage[QUANTITY_INDEX] + quantity),
+        ),
     )
 
     if quantity == search[LINE_QUANTITY_INDEX]:
